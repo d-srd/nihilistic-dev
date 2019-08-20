@@ -15,3 +15,5 @@ The topics that will be covered will include:
 * an occasional slow-cooker recipe
 * functional programming
 * declarative & reactive UI
+
+See ya later alligator.
