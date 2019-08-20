@@ -1,3 +1,7 @@
 #gatsby-noscript {
     display: none;
 }
+
+ul {
+    padding-left: 32pt;
+}
