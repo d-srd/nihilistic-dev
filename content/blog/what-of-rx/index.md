@@ -1,7 +1,7 @@
 ---
-title: The How of Rx
+title: The What of Rx
 date: "2019-08-21T19:01:41.393Z"
-description: "An introduction into how RxSwift works, from the bottom up."
+description: "An introductory tour of the inner workings of RxSwift, from the bottom up."
 ---
 
 You're a smart iOS developer who's particularly fond of reactive programming.
