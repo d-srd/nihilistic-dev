@@ -14,14 +14,14 @@ We will dive into the very essence of RxSwift,
 continuing to build our knowledge on the foundations
 laid out before us by the elders.
 
-The holy trinity of RxSwift is:
+The holy trinity of RxSwift consists of:
 - Event
 - Observer
 - Observable
 
 ### The Event
 
-The definition of an **event** is simple:
+The definition of an event is simple:
 
 ```swift
 public enum Event<Element> {
@@ -30,3 +30,52 @@ public enum Event<Element> {
     case completed
 }
 ```
+
+Its impact is anything but.
+
+We can now model anything. 
+
+Want to see a slightly exaggarated history of the entire universe?
+
+```swift
+struct History {
+    // TODO: take general relativity into consideration
+    let timestamp: Int
+    let description: String
+}
+
+let entireUniverse: [Event<History>] = [
+    .next(History(timestamp: -1, description: "...")),
+    .next(History(timestamp: 0, description: "boom")),
+    .next(History(timestamp: (14 - 5) * 3e19, description: "Formation of Earth")),
+    .next(History(timestamp: (14 - 13) * 3e19, description: "Dinosaurs also boom"),
+    .next(History(timestamp: (14 - 13) * 3e19, description: "Facebook facing fines in EU"))
+]
+```
+
+Want to see some real word network responses?
+
+```swift
+let realWorldNetworkResponses: [Event<(HTTPURLResponse, Data)>] = [
+    .next((.success, "{\"Hello\": \"World\"}".data(using: .utf8)!)),
+    .error(ResponseError(statusCode: 500, message: "Internal server error"))
+    .next((.success, "{\"Hello\": \"You\"}".data(using: .utf8)!)),
+]
+```
+
+You get the picture. 
+
+As Rule 34, addendum 21 states:
+> If it exists, there is an RxSwift representation of it.
+
+But what would be even more useful than an array of events would be a way to push
+those events somewhere and subscribe to them somewhere else.
+That would allow us to combine events together, wait until all three of our mandatory
+events complete, create new events out of thin air, filter only for events matching
+a desired predicate, or something else entirely.
+
+We're getting a bit ahead of ourselves, so let's slow down and smell the observers.
+
+
+### The Observer
+
