@@ -79,3 +79,56 @@ We're getting a bit ahead of ourselves, so let's slow down and smell the observe
 
 ### The Observer
 
+It has a very simple definition as well:
+
+```swift
+public protocol ObserverType {
+    associatedtype Element
+
+    func on(_ event: Event<Element>)
+}
+```
+
+> Side note: I've always found the RxSwift way of naming things confusing. Still do.
+> The Combine framework is much clearer in this regard:
+> events are pushed into a `Subscriber`, and they are published from a `Publisher`.
+> Easy peasy.
+
+An `Observer` is a thing that does something when an event comes.
+Let's implement a crude version of an `Observer`, storing all events
+in some backing storage until we need to access them.
+
+```swift
+public class Observer<Element>: ObserverType {
+    private let queue: DispatchQueue = .init(label: "thread-safe-array", attributes: .concurrent)
+    private var events: [Event<Element>] = []
+    
+    public func on(_ event: Event<Element>) {
+        queue.async(flags: .barrier) {
+            self.events.append(event)
+        }
+    }
+}
+```
+
+We can now put our events into a box in order to retrieve them later. 
+And hopefully do something with them.
+
+```swift
+struct Animal {
+    let identifier: String
+    
+    init(_ identifier: String) {
+        self.identifier = identifier
+    }
+}
+
+let dog = Animal("🐶")
+let fox = Animal("🦊")
+let penguin = Animal("🐧")
+let currentBackyardResident = Observer<Animal>()
+currentBackyardResident.on(.next(dog))
+currentBackyardResident.on(.next(fox))
+currentBackyardResident.on(.next(penguin))
+currentBackyardResident.on(.completed)
+```
